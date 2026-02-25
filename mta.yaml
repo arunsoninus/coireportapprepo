@@ -1,0 +1,93 @@
+_schema-version: "3.2"
+ID: coireportapp
+version: 0.0.1
+modules:
+- name: coireportapp-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: coireportapp-destination-service
+    parameters:
+      content-target: true
+  - name: coireportapp_html_repo_host
+    parameters:
+      service-key:
+        name: coireportapp_html_repo_host-key
+  - name: uaa_coireportapp
+    parameters:
+      service-key:
+        name: uaa_coireportapp-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: coireportapp_coireportapp_html_repo_host
+          ServiceInstanceName: coireportapp-html5-app-host-service
+          ServiceKeyName: coireportapp_html_repo_host-key
+          sap.cloud.service: coireportapp
+        - Authentication: OAuth2UserTokenExchange
+          Name: coireportapp_uaa_coireportapp
+          ServiceInstanceName: coireportapp-xsuaa-service
+          ServiceKeyName: uaa_coireportapp-key
+          sap.cloud.service: coireportapp
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: coireportapp-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: coireportapp_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - nusedusgcoireport.zip
+      name: nusedusgcoireport
+      target-path: resources/
+- name: nusedusgcoireport
+  type: html5
+  path: coireport
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: coireportapp-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: coireportapp-destination-service
+    service-plan: lite
+- name: coireportapp_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: coireportapp-html5-app-host-service
+    service-plan: app-host
+- name: uaa_coireportapp
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: coireportapp-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
