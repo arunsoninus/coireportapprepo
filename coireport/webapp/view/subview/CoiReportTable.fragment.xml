@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.uxap"
+	xmlns:tnt="sap.tnt">
+	<IconTabBar headerMode="Inline" select="onSelectIconFilter" selectedKey="{AppModel>/oTabKey}" expandable="false">
+		<items>
+			<IconTabFilter key="cw" text="CW/NED" count="{AppModel>/CWNED_Count}" visible="{AppModel>/cwVisible}">
+				<core:Fragment fragmentName="nus.edu.sg.coireport.view.subview.CoiReportCwTable" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter key="opwn" text="OPWN" count="{AppModel>/OPWN_Count}" visible="{AppModel>/opwnVisible}">
+				<core:Fragment fragmentName="nus.edu.sg.coireport.view.subview.CoiReportOpwnTable" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</core:FragmentDefinition>

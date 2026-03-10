@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog noDataText="No Data Found" title="Select FDLU" search=".handleSearch($event, 'FDLU_C', 'FDLU_T')"
+		liveChange=".handleSearch($event, 'FDLU_C', 'FDLU_T')" confirm=".handleConfirmFdlu" contentHeight="auto" contentWidth="40%"
+		cancel=".handleCloseUluFdlu" multiSelect="true" growingThreshold="1200"
+		items="{ path : 'AppModel>/claimRequest/fdluList', sorter : { path : 'FDLU_T', descending : false } }" rememberSelections="true">
+		<ColumnListItem vAlign="Middle" selected="{AppModel>Selected}">
+			<cells>
+				<ObjectIdentifier title="{AppModel>FDLU_T}" text="{AppModel>FDLU_C}" titleActive="false"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column minScreenWidth="Desktop" demandPopin="true">
+				<header>
+					<Text text="Select All"/>
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

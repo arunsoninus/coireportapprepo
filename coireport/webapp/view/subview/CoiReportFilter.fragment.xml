@@ -1,0 +1,167 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	xmlns:main="sap.ui.webc.main" xmlns:core="sap.ui.core">
+	<HBox>
+		<VBox width="100%">
+			<fb:FilterBar showFilterConfiguration="false" useToolbar="false" id="planningFilterBar" clear="onClear" search="onSearch"
+				showClearOnFB="true" class="sapUiNoMargin sapUiNoContentPadding">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="RequestType" label="{i18n>CwRunReport.FilterParam.RequestType}"
+						labelTooltip="Request Type" visibleInFilterBar="true">
+						<fb:control>
+							<MultiInput width="40%" id="inpRqstTypeValueHelp" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/claimTypeList' }"
+								valueHelpRequest="handleValueHelpRequestType" tokenUpdate="onUpdateClaimType" placeholder="Select Request Type"
+								tokens="{AppModel>/oClaimToken}">
+								<tokens>
+									<Token key="{AppModel>CONFIG_KEY}" text="{AppModel>CONFIG_VALUE}" delete="onDele"/>
+								</tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.FilterParam.RequestType}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>claimType}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="RequestID" label="{i18n>CwRunReport.FilterParam.RequestID}"
+						labelTooltip="{i18n>CwRunReport.FilterParam.RequestID}" visibleInFilterBar="true">
+						<fb:control>
+							<MultiInput width="40%" id="inpRequestNoValueHelp" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/requestIdList' }"
+								valueHelpRequest="openRequestNoValueHelpPopUp" placeholder="Select Request ID">
+								<tokens></tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.FilterParam.RequestID}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>REQUEST_ID}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="SubmissionDate" label="{i18n>CwRunReport.FilterParam.SubmissionDate}" labelTooltip=""
+						visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="dp_submission" placeholder="DD MMM YYYY"
+								value="{ 'type': 'sap.ui.model.type.DateInterval', 'parts': [ { 'type': 'sap.ui.model.type.Date', 'path': 'AppModel>/osubStart' }, { 'type': 'sap.ui.model.type.Date', 'path': 'AppModel>/osubEnd' } ] }"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="RequestPeriod" label="{i18n>CwRunReport.FilterParam.RequestPeriod}" labelTooltip=""
+						visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="dp_period" placeholder="DD MMM YYYY"
+								value="{ 'type': 'sap.ui.model.type.DateInterval', 'parts': [ { 'type': 'sap.ui.model.type.Date', 'path': 'AppModel>/oPeriodStart' }, { 'type': 'sap.ui.model.type.Date', 'path': 'AppModel>/oPeriodEnd' } ] }"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="ULU" label="{i18n>CwRunReport.FilterParam.ULU}" labelTooltip="" visibleInFilterBar="true">
+						<fb:control>
+							<MultiInput width="40%" id="inpUluValueHelp" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/UluList' }"
+								valueHelpRequest="handleValueHelpUlu" tokenUpdate="onTokenUpdateUlu" placeholder="Select ULU">
+								<tokens></tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.ULULookup.Code}"/>
+									</Column>
+									<Column>
+										<Label text="{i18n>CwRunReport.ULULookup.Name}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>ULU_C}"/>
+										<Label text="{AppModel>ULU_T}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="FDLU" label="{i18n>CwRunReport.FilterParam.FDLU}" labelTooltip=""
+						visibleInFilterBar="true">
+						<fb:control>
+							<MultiInput width="40%" id="inpFdluValueHelp" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/fdluList' }"
+								valueHelpRequest="handleValueHelpFdlu" tokenUpdate="onTokenUpdateFdlu" placeholder="Select FDLU">
+								<tokens></tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.FDLULookup.Code}"/>
+									</Column>
+									<Column>
+										<Label text="{i18n>CwRunReport.FDLULookup.Name}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>FDLU_C}"/>
+										<Label text="{AppModel>FDLU_T}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="Status" label="{i18n>CwRunReport.FilterParam.Status}" labelTooltip=""
+						visibleInFilterBar="true">
+						<fb:control>
+							<MultiInput width="40%" id="inpClaimStatus" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/statusList' }"
+								valueHelpRequest="handleValueHelpStatus" tokenUpdate="onTokenUpdateFdlu" placeholder="Select Status">
+								<tokens></tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.FilterParam.Status}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>STATUS_ALIAS}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="StaffID" label="{i18n>CwRunReport.FilterParam.StaffID}" labelTooltip=""
+						visibleInFilterBar="{=${AppModel>/oSelectedProf}==='CW_HRP' ? true : $true}">
+						<fb:control>
+							<MultiInput width="40%" id="inpStaffValueHelp" valueHelpOnly="true" suggestionRows="{ path : 'AppModel>/claimRequest/StaffIdList' }"
+								valueHelpRequest="openStaffIdValueHelpPopUp" tokenUpdate="onTokenUpdateStaff" placeholder="Select Staff" enableMultiLineMode="true">
+								<tokens></tokens>
+								<suggestionColumns>
+									<Column>
+										<Label text="{i18n>CwRunReport.StaffLookup.ID}"/>
+									</Column>
+									<Column>
+										<Label text="{i18n>CwRunReport.StaffLookup.Name}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<Label text="{AppModel>STF_NUMBER}"/>
+										<Label text="{AppModel>FULL_NM}"/>
+									</ColumnListItem>
+								</suggestionRows>
+							</MultiInput>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="clientname" label="Client / Program Name" labelTooltip="" visibleInFilterBar="true">
+						<fb:control>
+							<Input id="searchByNameId" placeholder="Search by Name" value="{AppModel>/searchByClientOrPrgmName}" maxLength="50"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="__$INTERNAL$" name="migrate" label="Include Migrated Records" labelTooltip="" visibleInFilterBar="true">
+						<fb:control>
+							<Switch id="inpmigrate" state="{AppModel>/oMigratestate}" customTextOn="Yes" customTextOff="No"></Switch>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<FlexBox alignItems="Center" alignContent="Center" backgroundDesign="Solid" justifyContent="Center">
+				<MessageStrip text="{i18n>IncludeMigrateRecordMessage}" class="sapUiTinyMarginTop sapUiNoMarginBottom"/>
+			</FlexBox>
+		</VBox>
+	</HBox>
+</core:FragmentDefinition>

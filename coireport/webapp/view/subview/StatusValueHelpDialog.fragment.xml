@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog id="stausDialog" noDataText="No Data Found" title="Select Status" search=".handleStaffSearch($event, 'STATUS_ALIAS')" liveChange=".handleStaffSearch($event, 'STATUS_ALIAS')" confirm=".handleConfirmStatus"
+		contentHeight="auto" contentWidth="40%" cancel=".handleCloseUluFdlu" multiSelect="true" rememberSelections="true"
+		items="{ path : 'AppModel>/claimRequest/statusList' }">
+		<ColumnListItem vAlign="Middle" selected="{AppModel>Selected}">
+			<cells>
+		 		<Text text="{AppModel>STATUS_ALIAS}"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+		 	<Column minScreenWidth="Desktop" demandPopin="true">
+				<header>
+					<Text text="Status Desc"/>
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

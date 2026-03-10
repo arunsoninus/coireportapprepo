@@ -1,6 +1,32 @@
-<mvc:View controllerName="nus.edu.sg.coireport.controller.CoiHome"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+<mvc:View controllerName="nus.edu.sg.coireport.controller.CoiHome" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true"
+	xmlns="sap.m">
+	<App id="app">
+		<Page id="page" showHeader="false" title="{i18n>title}">
+			<subHeader>
+				<OverflowToolbar>
+					<Button icon="sap-icon://grid" press="onNavDashBoard" type="Transparent" tooltip="Dashboard"/>
+				</OverflowToolbar>
+			</subHeader>
+			<content>
+				<core:Fragment fragmentName="nus.edu.sg.coireport.view.subview.CoiReportFilter" type="XML"/>
+				<HBox justifyContent="End">
+					<Label class="extractTypeClass" text="{i18n>coireport.ExtractionType.ForDownloadOnly}" visible="{AppModel>/offlineReportAccess}"/>
+					<RadioButtonGroup columns="2" class="sapUiMediumMarginBottom" visible="{AppModel>/offlineReportAccess}">
+						<RadioButton text="{i18n>coireport.ExtractionType.LiveVal}" select="onSelectExtractionMode" selected="true">
+							<customData>
+								<core:CustomData key="selectmode" value="{i18n>coireport.ExtractionType.LiveProp}"/>
+							</customData>
+						</RadioButton>
+						<RadioButton text="{i18n>coireport.ExtractionType.OfflineVal}" select="onSelectExtractionMode" selected="false">
+							<customData>
+								<core:CustomData key="selectmode" value="{i18n>coireport.ExtractionType.OfflineProp}"/>
+							</customData>
+						</RadioButton>
+					</RadioButtonGroup>
+				</HBox>
+				<MessageStrip text="{AppModel>/offlineSyncMessage}" class="sapUiTinyMarginTop sapUiNoMarginBottom"
+					visible="{= ${AppModel>/offlineReportAccess} ? (${AppModel>/extractionType} === ${i18n>coireport.ExtractionType.OfflineProp}) : false }"/>
+				<core:Fragment fragmentName="nus.edu.sg.coireport.view.subview.CoiReportTable" type="XML"/></content>
+		</Page>
+	</App>
 </mvc:View>

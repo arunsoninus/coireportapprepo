@@ -15,6 +15,35 @@
       "version": "1.20.3",
       "toolsId": "8417d945-4561-48c5-a8d9-d94a32ddbbdc"
     },
+     "dataSources": {
+      "utilService": {
+        "uri": "/v2/util",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/util_metadata.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "catalogService": {
+        "uri": "/v2/catalog/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/catalog.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "coiReportService": {
+        "uri": "/odata/v2/cwned/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/catalog.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
     "crossNavigation": {
       "inbounds": {
         "coireport-display": {
@@ -65,6 +94,37 @@
         "settings": {
           "bundleName": "nus.edu.sg.coireport.i18n.i18n"
         }
+      },
+      "CatalogSrvModel": {
+        "dataSource": "catalogService",
+        "preload": true,
+        "settings": {
+          "useBatch": false,
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "UtilitySrvModel": {
+        "dataSource": "utilService",
+        "preload": true,
+        "settings": {
+          "useBatch": false,
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "CoiReportSrvModel": {
+        "dataSource": "coiReportService",
+        "preload": true,
+        "settings": {
+          "useBatch": false,
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "synchronizationMode": "None",
+          "earlyRequests": true
+        }
       }
     },
     "resources": {
@@ -89,7 +149,7 @@
       "routes": [
         {
           "name": "RouteCoiHome",
-          "pattern": ":?query:",
+          "pattern": "RouteCoiHome",
           "target": [
             "TargetCoiHome"
           ]
@@ -103,9 +163,9 @@
       }
     },
     "rootView": {
-      "viewName": "nus.edu.sg.coireport.view.App",
+      "viewName": "nus.edu.sg.coireport.view.CoiHome",
       "type": "XML",
-      "id": "App",
+      "id": "CoiHome",
       "async": true
     }
   },

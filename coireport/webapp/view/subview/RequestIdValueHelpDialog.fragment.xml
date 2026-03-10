@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog noDataText="No Data Found" title="Select Request ID" search=".handleValueHelpRequestId" confirm=".handleConfirmRequestId"
+		contentHeight="auto" contentWidth="20%" cancel=".handleCloseRqst" multiSelect="true" growingThreshold="1000"
+		items="{ path : 'AppModel>/claimRequest/requestIdList' }">
+		<ColumnListItem vAlign="Middle">
+			<cells>
+				<Text text="{AppModel>REQUEST_ID}"/>
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column minScreenWidth="Desktop" demandPopin="true">
+				<header>
+					<!--<Text text="Request ID"/>-->
+					<Label text="Select All" design="Bold"/>
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.uxap"
+	xmlns:tnt="sap.tnt">
+	<Table id="CoiOpwnRequestsTableId" inset="false" sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="50"
+		updateFinished="onUpdateFinishedopwn"
+		items="{ path: 'CoiReportSrvModel>/cwsRequestViews', sorter: { path: 'SUBMITTED_ON_TS', descending: true }, templateShareable: true }">
+		<headerToolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<SearchField visible="{= ${AppModel>/showSearchField} ? true : false}" id="srchFldClaimRequestopwn" placeholder="Search request.."
+					search="onPressSearchClaimRequest" width="20%"/>
+				<Button icon="sap-icon://sort" press="onPressSortRequest" type="Transparent" visible="true"/>
+				<Button tooltip="Group" icon="sap-icon://group-2" press="onPressGroupRequest"/>
+				<Button id="exportExcelopwn" press="onPressRunReportDataExport" icon="sap-icon://excel-attachment" text="Download" type="Transparent"/>
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+				<Label design="Bold" text="Request ID"/>
+			</Column>
+			<Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+				<Label design="Bold" text="Request/Sub-Type" wrapping="true"/>
+			</Column>
+			<Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+				<Label design="Bold" text="Staff" wrapping="true"/>
+			</Column>
+			<Column hAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+				<Label design="Bold" text="Start Date"/>
+			</Column>
+			<Column hAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+				<Label design="Bold" text="End Date"/>
+			</Column>
+			<Column hAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+				<Label design="Bold" text="Program Name" wrapping="true"/>
+			</Column>
+			<Column hAlign="Center" minScreenWidth="Tablet">
+				<Label design="Bold" text="Status"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem type="Active" press="onPressPreviewClaimRequest">
+				<cells>
+					<!--<ObjectIdentifier title="{= ${CoiReportSrvModel>STATUS_CODE} === '01' ? 'Draft' : ${CoiReportSrvModel>REQUEST_ID} }"/>-->
+					<VBox>
+						<Text text="{= ${CoiReportSrvModel>STATUS_CODE} === '01' ? 'Draft' : ${CoiReportSrvModel>REQUEST_ID} }"/>
+						<Text text="{CoiReportSrvModel>CLAIM_TYPE_T}"/>
+					</VBox>
+					<VBox>
+						<Text text="{CoiReportSrvModel>PROCESS_TITLE}/"/>
+						<Text text="{CoiReportSrvModel>SUB_TYPE_T}"/>
+					</VBox>
+					<Text text="{CoiReportSrvModel>FULL_NM} ({CoiReportSrvModel>STAFF_ID})"/>
+					<Text text="{ path: 'CoiReportSrvModel>START_DATE', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd MMM, yyyy' } }"/>
+					<Text text="{ path: 'CoiReportSrvModel>END_DATE', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd MMM, yyyy' } }"/>
+					<!--<Text text="{path:'CoiReportSrvModel>DURATION_DAYS',formatter:'.formatter.formatRequestAmount' }"/>-->
+					<VBox>
+						<Text text="{CoiReportSrvModel>CLIENT_NAME}" visible="{=${CoiReportSrvModel>REQUEST_TYPE}==='OPWN' ? false : true}"/>
+						<Text text="{CoiReportSrvModel>PROGRAM_NAME}" visible="{=${CoiReportSrvModel>REQUEST_TYPE}==='OPWN' ? true : false}"/>
+					</VBox>
+					<tnt:InfoLabel text="{CoiReportSrvModel>STATUS_ALIAS}" tooltip="{CoiReportSrvModel>STATUS_ALIAS}"
+						colorScheme="{CoiReportSrvModel>STATUS_COLOR_CODE}" displayOnly="false"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:FragmentDefinition>

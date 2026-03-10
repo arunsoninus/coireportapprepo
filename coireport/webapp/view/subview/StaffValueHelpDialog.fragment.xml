@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog noDataText="No Data Found" title="Enter Employee ID/Name" search=".handleSearchStaff" confirm=".handleConfirmStaff"
+		contentHeight="auto" contentWidth="40%" cancel=".handleCloseStaff" multiSelect="true" growingThreshold="1000"
+		items="{ path : 'AppModel>/claimRequest/staffList' }" searchPlaceholder="Enter Employee ID/Name.">
+		<ColumnListItem vAlign="Middle">
+			<cells>
+				<!--Begin of change - CCEV3364 - Phase 2 Release 1-->
+				<!--<Text text="{AppModel>FULL_NM}"/>-->
+				<ObjectIdentifier title="{AppModel>FULL_NM}" text="{AppModel>NUSNET_ID}"/>
+				<!--End of change - CCEV3364 - Phase 2 Release 1-->
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column minScreenWidth="Desktop" demandPopin="true">
+				<header>
+					<Label text="Select All" design="Bold" class="sapUiTinyMarginTop"/>
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>
