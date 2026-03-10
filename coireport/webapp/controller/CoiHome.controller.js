@@ -66,19 +66,32 @@ sap.ui.define([
 
 		// *****************Event Handling Functions***************** //
 		onNavDashBoard: function () {
-			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-			var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
-				target: {
-					semanticObject: "cwdashboard",
-					action: "Display"
-				},
-				params: {}
-			})) || "";
-			oCrossAppNavigator.toExternal({
-				target: {
-					shellHash: hash
-				}
-			});
+			sap.ushell.Container.getServiceAsync("Navigation")
+				.then(function (oNavigation) {
+					oNavigation.navigate({
+						target: {
+							semanticObject: "cwdashboard",
+							action: "Display"
+						},
+						params: {}
+					});
+				})
+				.catch(function (err) {
+					console.error("Dashboard App Navigation failed", err);
+				});
+			// var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+			// var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+			// 	target: {
+			// 		semanticObject: "cwdashboard",
+			// 		action: "Display"
+			// 	},
+			// 	params: {}
+			// })) || "";
+			// oCrossAppNavigator.toExternal({
+			// 	target: {
+			// 		shellHash: hash
+			// 	}
+			// });
 		},
 
 		onPressGroupRequest: function (oEvent) {
@@ -630,7 +643,7 @@ sap.ui.define([
 		handleValueHelpFdlu: function (oEvent) {
 			var selectedItemsUlu = this.getUIControl("inpUluValueHelp").getTokens();
 			// var oDataModel = this.getComponentModel("CoiReportSrvModel");
-				var oCatalogSrvModel = this.getComponentModel("CatalogSrvModel");
+			var oCatalogSrvModel = this.getComponentModel("CatalogSrvModel");
 			var aFilters, dynamicFilters = [],
 				combinedFilter = "";
 			selectedItemsUlu.forEach(function (value) {
@@ -1077,34 +1090,76 @@ sap.ui.define([
 		// 8. Event for saving the info before navigating to other app
 		_fnSaveState: function () {
 
-			sap.ushell.Container.getService("Personalization").getContainer("Coireport", {
-				validity: 0
-			}).fail(function () {
-				//Error Handling
-			}).done(jQuery.proxy(function (oParam) {
-				this.oStateContainer = oParam;
-				this.oStateContainer.clear();
-				var oFiltervalue = this.AppModel.getData();
-				this.oStateContainer.setItemValue("persData", oFiltervalue);
-				this.oStateContainer.save();
-			}, this));
+			if (sap.ushell && sap.ushell.Container) {
+				// var that = this;
+				sap.ushell.Container.getServiceAsync("Personalization")
+					.then(function (oPersonalizationService) {
+						return oPersonalizationService.getContainer("Coireport", {
+							validity: 0
+						});
+					}.bind(this))
+					.then(function (oContainer) {
+						this.oStateContainer = oContainer;
+						// Clear previous personalization
+						this.oStateContainer.clear();
+						var oFilterValue = that.AppModel.getData();
+						this.oStateContainer.setItemValue("persData", oFilterValue);
+						return this.oStateContainer.save();
+					}.bind(this))
+					.catch(function (oError) {
+						console.error("Error saving personalization:", oError);
+					});
+			}
+
+			// sap.ushell.Container.getService("Personalization").getContainer("Coireport", {
+			// 	validity: 0
+			// }).fail(function () {
+			// 	//Error Handling
+			// }).done(jQuery.proxy(function (oParam) {
+			// 	this.oStateContainer = oParam;
+			// 	this.oStateContainer.clear();
+			// 	var oFiltervalue = this.AppModel.getData();
+			// 	this.oStateContainer.setItemValue("persData", oFiltervalue);
+			// 	this.oStateContainer.save();
+			// }, this));
 		},
 		// 9. Event to restore the values from back navigation
 		_fnRestoreState: function () {
 
-			this.AppModel.setProperty("/oRState", true);
-			sap.ushell.Container.getService("Personalization").getContainer("Coireport", {
-				validity: 0
-			}).fail(function () {
-				// Error Handler
-			}).done(jQuery.proxy(function (oParams) {
-				this.oStateContainer = oParams;
-				var oFilterValue = oParams.getItemValue("persData");
-				if (oFilterValue !== undefined) {
-					this.AppModel.setData(oFilterValue);
-					this.onSearch();
-				}
-			}, this));
+			if (sap.ushell && sap.ushell.Container) {
+				var that = this;
+				that.AppModel.setProperty("/oRState", true);
+				sap.ushell.Container.getServiceAsync("Personalization")
+					.then(function (oPersonalizationService) {
+						return oPersonalizationService.getContainer("Coireport", {
+							validity: 0
+						});
+					}.bind(this))
+					.then(function () {
+						this.oStateContainer = oContainer;
+						var oFilterValue = oParams.getItemValue("persData");
+						if (oFilterValue !== undefined) {
+							this.onPressGoRetrieveRequests();
+						}
+					}.bind(this))
+					.catch(function (oError) {
+						console.error("Error saving personalization:", oError);
+					});
+			}
+
+			// this.AppModel.setProperty("/oRState", true);
+			// sap.ushell.Container.getService("Personalization").getContainer("Coireport", {
+			// 	validity: 0
+			// }).fail(function () {
+			// 	// Error Handler
+			// }).done(jQuery.proxy(function (oParams) {
+			// 	this.oStateContainer = oParams;
+			// 	var oFilterValue = oParams.getItemValue("persData");
+			// 	if (oFilterValue !== undefined) {
+			// 		this.AppModel.setData(oFilterValue);
+			// 		this.onSearch();
+			// 	}
+			// }, this));
 		},
 
 		_fnDataDescription: function (oData, oKey) {
