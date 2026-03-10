@@ -1,5 +1,5 @@
 sap.ui.define([
-	"../controller/BaseController", "../extensions/extendedvaluehelp", "sap/ui/core/Fragment",
+	"../controller/BaseController", "sap/ui/core/Fragment",
 	"sap/ui/model/json/JSONModel",
 	"../utils/dataformatter", "sap/m/MessageToast", "sap/m/MessageBox", "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
@@ -11,7 +11,7 @@ sap.ui.define([
 	"sap/m/Token",
 	"../utils/services"
 
-], function (BaseController, ExtendedValueHelp, Fragment, JSONModel, Formatter, MessageToast, MessageBox, Filter,
+], function (BaseController, Fragment, JSONModel, Formatter, MessageToast, MessageBox, Filter,
 	FilterOperator, Sorter, Utility, Config, Spreadsheet, exportLibrary,
 	Token, Services) {
 	"use strict";
