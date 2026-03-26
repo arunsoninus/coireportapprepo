@@ -1,16 +1,16 @@
 sap.ui.define(
 	function () {
 		return {
-			displayLevyStatus: function (sIsWaived, iInvoiceNo, iClrDocNo) {
+			displayLevyStatus: function (sIsWaived, iInvoiceNo, iClrDocNo, component) {
 				var sLevyStatus = "";
 				if (sIsWaived === "Y") {
-					sLevyStatus = "Not Applicable";
+					sLevyStatus = component ? component.getI18n("levyStatus.notApplicable") : "Not Applicable";
 				} else if (!iInvoiceNo) {
-					sLevyStatus = "Pending posting to Finance System (FS2)";
+					sLevyStatus = component ? component.getI18n("levyStatus.pendingPosting") : "Pending posting to Finance System (FS2)";
 				} else if (iInvoiceNo && !iClrDocNo) {
-					sLevyStatus = "Posted to Finance System (FS2)";
+					sLevyStatus = component ? component.getI18n("levyStatus.posted") : "Posted to Finance System (FS2)";
 				} else if (iInvoiceNo && iClrDocNo) {
-					sLevyStatus = "Paid";
+					sLevyStatus = component ? component.getI18n("levyStatus.paid") : "Paid";
 				} else {
 					sLevyStatus = "";
 				}
@@ -110,7 +110,6 @@ sap.ui.define(
 							var ampm = (hh >= 12) ? 'PM' : 'AM';
 							hh = hh % 12;
 							hh = (hh ? (hh < 10 ? "0" + hh : hh) : 12);
-							// hh = (hh.length > 1) ? hh : "0" + hh;
 							mins = dateValue.getMinutes() + "";
 							mins = (mins.length > 1) ? mins : "0" + mins;
 							secs = dateValue.getSeconds() + "";
@@ -124,7 +123,6 @@ sap.ui.define(
 							var ampm = (hh >= 12) ? 'PM' : 'AM';
 							hh = hh % 12;
 							hh = (hh ? (hh < 10 ? "0" + hh : hh) : 12);
-							// hh = (hh.length > 1) ? hh : "0" + hh;
 							mins = dateValue.getMinutes() + "";
 							mins = (mins.length > 1) ? mins : "0" + mins;
 							secs = dateValue.getSeconds() + "";
@@ -138,7 +136,6 @@ sap.ui.define(
 							var ampm = (hh >= 12) ? 'PM' : 'AM';
 							hh = hh % 12;
 							hh = (hh ? (hh < 10 ? "0" + hh : hh) : 12);
-							// hh = (hh.length > 1) ? hh : "0" + hh;
 							mins = dateValue.getMinutes() + "";
 							mins = (mins.length > 1) ? mins : "0" + mins;
 							secs = dateValue.getSeconds() + "";
