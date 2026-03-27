@@ -47,34 +47,11 @@ sap.ui.define([
 						this.AppModel.setProperty("/opwnVisible", aMatrixData.some(oMatrixData =>
 							oMatrixData.STAFF_USER_GRP === "ORMD_ADMIN" &&
 							(oMatrixData.PROCESS_CODE === "203")));
-						// this._fnLoadMetaData();
 					}
 					await this.retrieveAllLookups();
 				}.bind(this)
 			);
 		},
-		// generateTokenForLoggedInUser: function () {
-		// 	services.fetchLoggedUserToken(this, function (oRetData) {
-		// 		// this.AppModel.setProperty("/token", oRetData.token);
-		// 		this.AppModel.setProperty("/loggedInUserInfo/userName", oRetData.staffInfo.primaryAssignment.STF_NUMBER);
-		// 		this.AppModel.setProperty("/oPrimaryData", oRetData);
-
-		// 		var aMatrixData = this.AppModel.getProperty("/oPrimaryData/staffInfo/inboxApproverMatrix"),
-		// 			aProcessCode = [];
-		// 		aMatrixData.forEach(function (oMatrixData) {
-		// 			if (oMatrixData.STAFF_USER_GRP === "ORMD_ADMIN") {
-		// 				aProcessCode.push(oMatrixData.PROCESS_CODE);
-		// 			}
-		// 		});
-		// 		this.AppModel.setProperty("/cwVisible", aMatrixData.some(oMatrixData =>
-		// 			oMatrixData.STAFF_USER_GRP === "ORMD_ADMIN" &&
-		// 			(oMatrixData.PROCESS_CODE === "201" || oMatrixData.PROCESS_CODE === "202" || oMatrixData.PROCESS_CODE === "204")));
-		// 		this.AppModel.setProperty("/opwnVisible", aMatrixData.some(oMatrixData =>
-		// 			oMatrixData.STAFF_USER_GRP === "ORMD_ADMIN" &&
-		// 			(oMatrixData.PROCESS_CODE === "203")));
-		// 		this._fnLoadMetaData();
-		// 	}.bind(this));
-		// },
 		retrieveAllLookups: async function () {
 			this.onClear();
 			Utility.retrieveLocations(this);
@@ -90,36 +67,6 @@ sap.ui.define([
 			this.onSearch();
 			this.getView().setBusy(false);
 		},
-		// _fnLoadMetaData: function () {
-		// 	var serviceName = config.dbOperations.metadataClaims;
-		// 	var token = this.AppModel.getProperty("/token");
-		// 	var oHeaders = {
-		// 		"Accept": "application/json",
-		// 		"Authorization": "Bearer" + " " + token
-		// 	};
-
-		// 	var oDataModel = new ODataModel({
-		// 		serviceUrl: serviceName,
-		// 		headers: oHeaders
-		// 	});
-		// 	oDataModel.setUseBatch(false);
-		// 	oDataModel.metadataLoaded().then(function () {
-		// 		this.getOwnerComponent().setModel(oDataModel, "CoiReportSrvModel");
-		// 		this.onClear();
-		// 		Utility.retrieveLocations(this);
-		// 		Utility.retrieveWorkTypes(this);
-		// 		Utility.retrieveUnitType(this);
-		// 		Utility.retrieveLevyDetails(this);
-		// 		Utility.retrieveRemunerationType(this);
-		// 		Utility.retrieveWaivers(this);
-		// 		Utility.retrieveSubmission(this);
-		// 		Utility.retrieveSuccessRuns(this);
-		// 		Utility.retrieveStatus(this);
-		// 		Utility.retrievePaymentType(this);
-		// 		this.onSearch();
-		// 		this.getView().setBusy(false);
-		// 	}.bind(this));
-		// },
 
 		getComponentModel: function (modelName) {
 			var model = (modelName) ? this.getOwnerComponent().getModel(modelName) : this.getOwnerComponent().getModel();
@@ -133,8 +80,6 @@ sap.ui.define([
 			this.getOwnerComponent().getInitialDataForUser();
 		},
 
-		// Filter Month and Year from the payment details
-
 		fnFilterPaymentMonth: function (dataArray, targetDates) {
 			return dataArray.filter(item => {
 				var itemDate = `${item.MONTH}/${item.YEAR}`;
@@ -145,6 +90,11 @@ sap.ui.define([
 		getI18n: function (sTextField) {
 			var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
 			var i18nTextValue = oResourceBundle.getText(sTextField);
+			return i18nTextValue ? i18nTextValue : sTextField;
+		},
+		getI18nVariables: function (sTextField, aVariables) {
+			var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+			var i18nTextValue = oResourceBundle.getText(sTextField, aVariables);
 			return i18nTextValue ? i18nTextValue : sTextField;
 		},
 		_fnULUgeneratefilter: function (param) {
@@ -173,17 +123,11 @@ sap.ui.define([
 			}
 			return dynamicFilters;
 		},
-		/*
-		 * Set Busy Indicators
-		 */
 		loadBusyIndicator: function (content, isBusy) {
 			var pageContent = this.getView().byId(content);
 			pageContent = (pageContent) ? pageContent : sap.ui.getCore().byId(content);
 			pageContent.setBusy(isBusy);
 		},
-		/**
-		 * Fetch control
-		 */
 		getUIControl: function (id, fragmentId) {
 			var view = this.getView();
 			var control = (fragmentId) ? Fragment.byId(fragmentId, id) : (view.byId(id)) ? view.byId(id) : sap.ui.getCore().byId(id);
@@ -296,11 +240,11 @@ sap.ui.define([
 			}, {
 				label: "Agreed Payment - Stock / Shares",
 				width: "25%",
-				property: "AGREED_QNTY" // P2A021 - Changes
+				property: "AGREED_QNTY"
 			}, {
 				label: "Agreed Payment - Unit Type for Stock / Shares",
 				width: "25%",
-				property: 'UNIT_TYPE' // P2A021 - Changes
+				property: 'UNIT_TYPE'
 			}, {
 				label: "Agreed Payment - Description",
 				type: EdmType.String,
@@ -451,62 +395,13 @@ sap.ui.define([
 				label: "Request Status",
 				type: EdmType.String,
 				property: 'STATUS_ALIAS'
-			}
-				//  {
-				// 	label: "Admin Fees",
-				// 	type: EdmType.String,
-				// 	width: "25%",
-				// 	property: 'PROPERTY_USAGE'
-				// }, {
-				// 	label: "Waiver",
-				// 	property: 'IS_WAIVED'
-				// },
-				// {
-				// 	label: "Status",
-				// 	property: 'STATUS',
-				// 	type: EdmType.String
-				// }, {
-				// 	label: "Payment Type",
-				// 	property: 'PAYMENT_TYPE',
-				// 	type: EdmType.String
-				// }, {
-				// 	label: "WBS",
-				// 	type: EdmType.String,
-				// 	property: 'WBS'
-				// }, {
-				// 	label: "WBS Percentage",
-				// 	type: EdmType.String,
-				// 	property: 'VALUE'
-				// }, {
-				// 	label: "Submitted On",
-				// 	property: 'SUBMITTED_ON_TS',
-				// 	width: "20%"
-				// }, {
-				// 	label: "Submitted By",
-				// 	property: 'SUBMITTED_BY_FULLNAME',
-				// 	type: EdmType.String
-				// }, {
-				// 	label: "Status",
-				// 	property: 'STATUS_ALIAS',
-				// 	width: "20%",
-				// 	type: EdmType.String
-				// }, {
-				// 	label: "Approved By",
-				// 	property: 'TASK_COMPLETED_FULL_NM',
-				// 	type: EdmType.String
-				// }, {
-				// 	label: "Approved On",
-				// 	type: EdmType.Date,
-				// 	format: 'dd MMM, yyyy',
-				// 	property: 'TASK_ACTUAL_DOC'
-				// }
-			];
+			}];
 
 		},
 
 		formatTimestamp: function (timestamp) {
 
-			var jsDate = new Date(timestamp); // Extract timestamp
+			var jsDate = new Date(timestamp);
 			var day = jsDate.getDate().toString().padStart(2, '0');
 			var month = jsDate.toLocaleString('default', {
 				month: 'short'
