@@ -1226,6 +1226,7 @@ sap.ui.define([
 				var token = this.AppModel.getProperty("/token");
 				var oHeaders = {
 					"Content-Type": "application/json",
+					"x-app-id": "nus.edu.sg.coireport",
 					"Authorization": "Bearer" + " " + token
 				};
 				var dynamicData = this.generateData(oData);

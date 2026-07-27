@@ -6,6 +6,7 @@ sap.ui.define([], function () {
             var oHeaders = {
 				"Accept": "application/json",
 				"AccessPoint": "A",
+				"x-app-id": "nus.edu.sg.coireport",
 				"Content-Type": "application/json"
 			};
 			var currentURL = window.location.href;

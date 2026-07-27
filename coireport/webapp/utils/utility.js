@@ -14,6 +14,7 @@ sap.ui.define([
 			var oHeaders = {
 				"Accept": "application/json",
 				"Authorization": "Bearer" + " " + token,
+				"x-app-id": "nus.edu.sg.coireport",
 				"Content-Type": "application/json"
 			};
 			return oHeaders;

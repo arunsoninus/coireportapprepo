@@ -5,7 +5,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.1"
+      "version": "0.0.2"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -99,6 +99,7 @@
         "dataSource": "catalogService",
         "preload": true,
         "settings": {
+          "headers": { "x-app-id": "nus.edu.sg.coireport" },
           "useBatch": false,
           "operationMode": "Server",
           "autoExpandSelect": true,
@@ -109,6 +110,7 @@
         "dataSource": "utilService",
         "preload": true,
         "settings": {
+          "headers": { "x-app-id": "nus.edu.sg.coireport" },
           "useBatch": false,
           "operationMode": "Server",
           "autoExpandSelect": true,
@@ -119,6 +121,7 @@
         "dataSource": "coiReportService",
         "preload": true,
         "settings": {
+          "headers": { "x-app-id": "nus.edu.sg.coireport" },
           "useBatch": false,
           "operationMode": "Server",
           "autoExpandSelect": true,
