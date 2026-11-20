@@ -23,7 +23,8 @@ sap.ui.define([],
 				cwsAppConfigs: "/cwsappconfig_data",
 				appConfigs : "/appconfig_data",
 				paymentDetails:"/retrieveMassPaymentList",
-				fdluulu_datas : "/fdluulu_data"
+				fdluulu_datas : "/fdluulu_data",
+				syncRunReport : "/getSyncReportRunDetails"
 			}
 
 		};

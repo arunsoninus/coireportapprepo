@@ -111,10 +111,11 @@ sap.ui.define([
 				}.bind(component));
 		},
 		retrieveSuccessRuns: function (component) {
-			var oHeaders = this._headerToken(component);
-			Services._loadDataUsingJsonModel(Config.dbOperations.syncRunReport, null, "GET", oHeaders, function (oData) {
-				component.AppModel.setProperty("/lastSyncResults", oData.getSource().getData().syncResults);
-			}.bind(component));
+			Services.getSyncReportRunDetails(component, function (aSyncResults) {
+				component.AppModel.setProperty("/lastSyncResults", aSyncResults);
+				// The info message may have been built before this response arrived, so rebuild it.
+				component.showMessageInfoForLastSync();
+			});
 		},
 
 		retrieveStatus: function (component) {

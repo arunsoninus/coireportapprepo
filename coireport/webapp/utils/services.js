@@ -117,6 +117,21 @@ sap.ui.define([
 				error: function (oError) { }
 			});
 		},
+		getSyncReportRunDetails: function (component, callBackFx) {
+			const CoiReportSrvModel = component.getComponentModel("CoiReportSrvModel");
+			this._readDataUsingOdataModel(
+				Config.dbOperations.syncRunReport,
+				CoiReportSrvModel,
+				component,
+				[],
+				function (response) {
+					// On error the helper passes the error object, so fall back to an empty list.
+					const oResult = response && response.getSyncReportRunDetails;
+					callBackFx(oResult && Array.isArray(oResult.syncResults) ? oResult.syncResults : []);
+				}.bind(component),
+				HeaderHelper._headerToken()
+			);
+		},
 		_readDataUsingOdataModel: async function (
 			serviceUrl,
 			oDataModel,
