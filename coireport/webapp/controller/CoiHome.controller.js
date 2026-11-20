@@ -265,7 +265,7 @@ sap.ui.define([
 				"$filter": aFilters[1]
 			};
 
-			oDataModel.read("/CwsReportExtracts", {
+			oDataModel.read("/cwsReportExtracts", {
 				urlParameters: oUrlParameters,
 				success: function (oData) {
 					if (oData && oData.results.length > 0) {
@@ -274,6 +274,16 @@ sap.ui.define([
 						this.hideBusyIndicator();
 						MessageBox.error("No Data to download.");
 					}
+				}.bind(this),
+				error: function (oError) {
+					this.hideBusyIndicator();
+					let sMessage = "Offline data download failed.";
+					try {
+						sMessage = JSON.parse(oError.responseText).error.message.value;
+					} catch (e) {
+						// keep the generic message when the response is not OData JSON
+					}
+					MessageBox.error(sMessage);
 				}.bind(this)
 			});
 			// }
@@ -1030,11 +1040,11 @@ sap.ui.define([
 		 * Prepare Message and display in the Information Tab against each table
 		 */
 		showMessageInfoForLastSync: function () {
-			var message = "";
+			let message = "";
 			if (this.AppModel.getProperty("/offlineReportAccess") && (this.AppModel.getProperty("/extractionType") === this.getI18n(
 				"coireport.ExtractionType.OfflineProp"))) {
-				var selectedProcess = this.AppModel.getProperty("/oTabKey");
-				var syncResults = this.AppModel.getProperty("/lastSyncResults");
+				const selectedProcess = this.AppModel.getProperty("/oTabKey");
+				const syncResults = this.AppModel.getProperty("/lastSyncResults") || [];
 				const latestSync = {};
 				// Iterate over all entries
 				syncResults.forEach(entry => {
@@ -1049,21 +1059,25 @@ sap.ui.define([
 					}
 				});
 
-				// message = `For Offline Data download, the data will be as of `;
-				message = this.getI18n("coireport.Offline.InitialMsg");
+				// Skip process codes with no sync record instead of failing on a missing entry.
+				const describe = function (aCodes) {
+					return aCodes.filter(sCode => latestSync[sCode])
+						.map(sCode => `${latestSync[sCode].PROCESS_TITLE} - ${Formatter.formatDateAsString(latestSync[sCode].LAST_SYNCED_ON, "dd/MM/yyyy hh:MM:ss aa")}`)
+						.join(", ");
+				};
+				const sCwText = this.AppModel.getProperty("/cwVisible") ? describe(['201', '202', '204']) : "";
+				const sOpwnText = this.AppModel.getProperty("/opwnVisible") ? describe(['203']) : "";
 
-				if (this.AppModel.getProperty("/cwVisible")) {
-					message += ' ' +
-						`${latestSync['201'].PROCESS_TITLE} - ${Formatter.formatDateAsString(latestSync['201'].LAST_SYNCED_ON, "dd/MM/yyyy hh:MM:ss aa")}, ` +
-						`${latestSync['202'].PROCESS_TITLE} - ${Formatter.formatDateAsString(latestSync['202'].LAST_SYNCED_ON, "dd/MM/yyyy hh:MM:ss aa")}, ` +
-						`${latestSync['204'].PROCESS_TITLE} - ${Formatter.formatDateAsString(latestSync['204'].LAST_SYNCED_ON, "dd/MM/yyyy hh:MM:ss aa")}.`;
+				if (sCwText || sOpwnText) {
+					message = this.getI18n("coireport.Offline.InitialMsg");
+					if (sCwText) {
+						message += ' ' + sCwText + '.';
+					}
+					if (sOpwnText) {
+						message += (sCwText ? ' and ' : ' ') + sOpwnText + '.';
+					}
 				}
 
-				if (this.AppModel.getProperty("/opwnVisible")) {
-					message += this.AppModel.getProperty("/cwVisible") ? ' and ' : ' ';
-					message +=
-						`${latestSync['203'].PROCESS_TITLE} - ${Formatter.formatDateAsString(latestSync['203'].LAST_SYNCED_ON, "dd/MM/yyyy hh:MM:ss aa")}.`;
-				}
 			}
 
 			this.AppModel.setProperty("/offlineSyncMessage", message);

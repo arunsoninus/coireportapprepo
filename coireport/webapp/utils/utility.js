@@ -175,7 +175,8 @@ sap.ui.define([
 						data.MODIFIED_BY_FULLNAME : "",
 					"WBS": data.AMENDED_WBS,
 					"VALUE": data.AMENDED_ALLOT_VAL,
-					"MONTH": listOfMonths[Number(data.MONTH) - 1].substring(0, 3) + "-" + data.YEAR,
+					// a request with no payment schedule has one line with no MONTH
+					"MONTH": data.MONTH ? listOfMonths[Number(data.MONTH) - 1].substring(0, 3) + "-" + data.YEAR : "",
 					"AMOUNT": data.AMOUNT_PAYABLE,
 					"STATUS": data.PAYMENT_REQ_STATUS_ALIAS,
 					"PAYMENT_TYPE": data.PAYMENT_TYPE_ALIAS,
@@ -251,7 +252,8 @@ sap.ui.define([
 					"LEVY_STATUS": data.PAYMENT_TYPE === 'R' ? Formatter.displayLevyStatus(data.IS_PYMT_WAIVED, data.INVOICE_NO,
 						data.CLR_DOC_NO) : "",
 					"R_UNIT_TYPE": data.PAYMENT_TYPE === 'R' ? data.UNIT_TYPE_T : "",
-					"PAYMENT_ID": data.PAYMENT_ID.slice(4) //Added payment_id for sorting
+					// a request with no payment has one line with no PAYMENT_ID
+					"PAYMENT_ID": data.PAYMENT_ID ? data.PAYMENT_ID.slice(4) : "" //Added payment_id for sorting
 				};
 
 				return [baseData];
