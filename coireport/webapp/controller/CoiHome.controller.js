@@ -139,7 +139,7 @@ sap.ui.define([
 				};
 			} else {
 				oSort = {
-					sortKey: "REQ_UNIQUE_ID",
+					sortKey: "SUBMITTED_ON_TS",
 					sortDescending: true
 				};
 			}
@@ -746,7 +746,7 @@ sap.ui.define([
 					path: "CoiReportSrvModel>" + Config.dbOperations.cwsRequestViewApi,
 					template: this.oTemplateopwn,
 					sorter: new Sorter({
-						path: "REQUEST_ID",
+						path: "SUBMITTED_ON_TS",
 						descending: true
 					}),
 					filters: andFilter,
@@ -783,7 +783,7 @@ sap.ui.define([
 				path: "CoiReportSrvModel>" + Config.dbOperations.cwsRequestViewApi,
 				template: this.oTemplate,
 				sorter: new Sorter({
-					path: "REQUEST_ID",
+					path: "SUBMITTED_ON_TS",
 					descending: true
 				}),
 				filters: sFilter,
